@@ -1,6 +1,6 @@
 # 🍕 AR Pizza Menu Experience
 
-### 🔗 [Live Demo](https://Shahazadi-Shaguftha-Syed.github.io/AR-Pizza-Menu/)
+### 🔗 [Live Demo](https://shahazadi-shaguftha-syed.github.io/PizzaAR/)
 
 An immersive Augmented Reality menu that brings your favorite pizzas to life! This project uses **AR.js** and **A-Frame** to create a stunning, interactive dining experience.
 
