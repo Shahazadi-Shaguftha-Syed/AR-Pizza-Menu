@@ -1,7 +1,7 @@
 AFRAME.registerComponent("markerhandler", {
   init: async function () {
     // Get the dishes collection
-    var dishes = await this.getDishes();
+    var dishes = await fetchDishes();
 
     // markerFound event
     this.el.addEventListener("markerFound", () => {
@@ -20,8 +20,10 @@ AFRAME.registerComponent("markerhandler", {
     var buttonDiv = document.getElementById("button-div");
     buttonDiv.style.display = "flex";
 
+    var dish = dishes.find(dish => dish.id === markerId);
+
     var ratingButton = document.getElementById("rating-button");
-    var orderButtton = document.getElementById("order-button");
+    var orderButton = document.getElementById("order-button");
 
     // Handling Click Events
     ratingButton.onclick = () => {
@@ -35,7 +37,7 @@ AFRAME.registerComponent("markerhandler", {
             <span class="star" data-value="2">★</span>
             <span class="star" data-value="1">★</span>
           </div>
-          <p class="rating-desc">How was your Margherita Pizza experience?</p>
+          <p class="rating-desc">How was your ${dish.dish_name} experience?</p>
         `,
         showConfirmButton: false,
         background: '#1e1e1e',
@@ -60,11 +62,11 @@ AFRAME.registerComponent("markerhandler", {
       });
     };
 
-    orderButtton.onclick = () => {
+    orderButton.onclick = () => {
       Swal.fire({
         icon: 'success',
         title: 'Order Placed!',
-        text: 'Your pizza is being prepared in the kitchen.',
+        text: `Your ${dish.dish_name} is being prepared in the kitchen.`,
         background: '#1e1e1e',
         color: '#fff',
         timer: 3000,
@@ -73,8 +75,6 @@ AFRAME.registerComponent("markerhandler", {
     };
 
     // Changing Model scale and visibility
-    var dish = dishes.filter(dish => dish.id === markerId)[0];
-
     var model = document.querySelector(`#model-${dish.id}`);
     model.setAttribute("position", dish.model_geometry.position);
     model.setAttribute("rotation", dish.model_geometry.rotation);
@@ -89,19 +89,6 @@ AFRAME.registerComponent("markerhandler", {
     // Changing button div visibility
     var buttonDiv = document.getElementById("button-div");
     buttonDiv.style.display = "none";
-  },
-
-  getDishes: async function () {
-    try {
-      const snap = await firebase.firestore().collection("dishes").get();
-      if (snap.empty) {
-        return dishData;
-      }
-      return snap.docs.map(doc => doc.data());
-    } catch (error) {
-      console.error("Firebase error in handler:", error);
-      return dishData;
-    }
   }
 });
 

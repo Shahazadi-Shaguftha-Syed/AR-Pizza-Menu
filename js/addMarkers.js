@@ -4,7 +4,7 @@ AFRAME.registerComponent("create-markers", {
     var mainScene = document.querySelector("#main-scene");
 
     // Get the dishes collection
-    var dishes = await this.getDishes();
+    var dishes = await fetchDishes();
    
     dishes.map(dish => {
       var marker = document.createElement("a-marker");   
@@ -95,20 +95,6 @@ AFRAME.registerComponent("create-markers", {
       });
       mainPlane.appendChild(price);
     });
-  },
-
-  getDishes: async function() {
-    try {
-      const snap = await firebase.firestore().collection("dishes").get();
-      if (snap.empty) {
-        console.log("No dishes found in Firebase, using fallback data.");
-        return dishData;
-      }
-      return snap.docs.map(doc => doc.data());
-    } catch (error) {
-      console.error("Firebase error:", error);
-      return dishData;
-    }
   }
 });
 

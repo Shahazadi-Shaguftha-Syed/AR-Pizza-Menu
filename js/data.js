@@ -18,3 +18,17 @@ const dishData = [
     price: 12.99
   }
 ];
+
+async function fetchDishes() {
+  try {
+    const snap = await firebase.firestore().collection("dishes").get();
+    if (snap.empty) {
+      console.log("No dishes found in Firebase, using fallback data.");
+      return dishData;
+    }
+    return snap.docs.map(doc => doc.data());
+  } catch (error) {
+    console.error("Firebase error:", error);
+    return dishData;
+  }
+}

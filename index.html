@@ -4,6 +4,13 @@
 <head>
   <title>AR Pizza Menu | Premium Experience</title>
   <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+
+  <script>
+    // Enforce landing page first
+    if (sessionStorage.getItem('launched') !== '1') {
+      window.location.href = 'landing.html';
+    }
+  </script>
   
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -56,7 +63,7 @@
 
 </head>
 
-<body style="margin : 0px; overflow: hidden; font-family: 'Outfit', sans-serif;">
+<body style="overflow: hidden; font-family: 'Outfit', sans-serif;">
   
   <div class="header-overlay">
     <div class="logo-container">
@@ -88,12 +95,13 @@
 
   <script>
     window.addEventListener('load', () => {
-      setTimeout(() => {
+      const scene = document.querySelector('a-scene');
+      scene.addEventListener('loaded', () => {
         document.getElementById('loading-screen').style.opacity = '0';
         setTimeout(() => {
           document.getElementById('loading-screen').style.display = 'none';
         }, 500);
-      }, 2000);
+      });
     });
   </script>
 
